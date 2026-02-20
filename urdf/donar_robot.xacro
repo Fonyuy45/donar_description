@@ -1,0 +1,233 @@
+<?xml version="1.0" ?>
+<robot name="donar_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find donar_description)/urdf/materials.xacro" />
+
+
+<!-- BASE FOOTPRINT -->
+
+<!-- BASE FOOTPRINT -->
+<link name="base_footprint"/>
+
+<joint name="base_footprint_joint" type="fixed">
+  <origin xyz="0.0 0.0 0.15" rpy="0 0 0"/>
+  <parent link="base_footprint"/>
+  <child link="base_link"/>
+</joint>
+
+
+<!-- BASE LINK -->
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.00013095962477824982 1.4938322527424564e-05 0.19291134702067492" rpy="0 0 0"/>
+    <mass value="35.0"/>
+    <inertia ixx="4.525119" iyy="7.683395" izz="8.427305" ixy="-4.4e-05" iyz="0.000243" ixz="-0.008986"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://donar_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://donar_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<!-- RIGHT WHEEL -->
+<link name="right_wheel_1">
+  <inertial>
+    <origin xyz="0.0 -0.025 0.0" rpy="0 0 0"/>
+    <mass value="2.0"/>
+    <inertia ixx="0.016277" iyy="0.031234" izz="0.016277" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.221 0.26 -0.04" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://donar_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.221 0.26 -0.04" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://donar_description/meshes/right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="right_wheel_joint" type="continuous">
+  <origin xyz="0.221 -0.26 0.04" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="right_wheel_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<!-- LEFT WHEEL -->
+<link name="left_wheel_1">
+  <inertial>
+    <origin xyz="0.0 0.025 0.0" rpy="0 0 0"/>
+    <mass value="2.0"/>
+    <inertia ixx="0.016277" iyy="0.031234" izz="0.016277" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.221 -0.26 -0.04" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://donar_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.221 -0.26 -0.04" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://donar_description/meshes/left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="left_wheel_joint" type="continuous">
+  <origin xyz="0.221 0.26 0.04" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="left_wheel_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<!-- LEFT CASTER WHEEL (NEW SIMPLIFIED DESIGN) -->
+<link name="left_caster_wheel_1">
+  <inertial>
+    <!-- Inertial from new exported URDF -->
+    <origin xyz="0.0 0.0 -0.03891304347826075" rpy="0 0 0"/>
+    <mass value="0.408490820770769"/>
+    <inertia ixx="0.000369" iyy="0.000369" izz="0.000304" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <!-- Visual offset from new URDF -->
+    <origin xyz="0.304 -0.2 0.01" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://donar_description/meshes/left_caster_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <!-- Use sphere collision for better physics -->
+    <origin xyz="0.0 0.0 -0.05" rpy="0 0 0"/>
+    <geometry>
+      <sphere radius="0.04"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="left_caster_joint" type="fixed">
+  <!-- Position from new URDF -->
+  <origin xyz="-0.304 0.2 -0.01" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="left_caster_wheel_1"/>
+</joint>
+
+<!-- RIGHT CASTER WHEEL (NEW SIMPLIFIED DESIGN) -->
+<link name="right_caster_wheel_1">
+  <inertial>
+    <!-- Inertial from new exported URDF -->
+    <origin xyz="0.0 0.0 -0.03891304347826075" rpy="0 0 0"/>
+    <mass value="0.408490820770769"/>
+    <inertia ixx="0.000369" iyy="0.000369" izz="0.000304" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <!-- Visual offset from new URDF -->
+    <origin xyz="0.304 0.2 0.01" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://donar_description/meshes/right_caster_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <!-- Use sphere collision for better physics -->
+    <origin xyz="0.0 0.0 -0.05" rpy="0 0 0"/>
+    <geometry>
+      <sphere radius="0.04"/>
+    </geometry>
+
+  </collision>
+</link>
+
+<joint name="right_caster_joint" type="fixed">
+  <!-- Position from new URDF -->
+  <origin xyz="-0.304 -0.2 -0.01" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="right_caster_wheel_1"/>
+</joint>
+
+<!-- GAZEBO PLUGINS -->
+<gazebo>
+  <plugin filename="ignition-gazebo-joint-state-publisher-system"
+          name="ignition::gazebo::systems::JointStatePublisher">
+    <topic>/joint_states</topic>
+    <update_rate>50</update_rate>
+    <joint_name>left_wheel_joint</joint_name>
+    <joint_name>right_wheel_joint</joint_name>
+  </plugin>
+</gazebo>
+
+<gazebo>
+  <plugin filename="ignition-gazebo-odometry-publisher-system"
+          name="ignition::gazebo::systems::OdometryPublisher">
+    <odom_topic>/donar_robot/odometry</odom_topic>
+    <odom_frame>odom</odom_frame>
+    <robot_base_frame>base_link</robot_base_frame>
+    <odom_publish_frequency>50</odom_publish_frequency>
+  </plugin>
+</gazebo>
+
+<gazebo>
+  <plugin filename="ignition-gazebo-diff-drive-system"
+          name="ignition::gazebo::systems::DiffDrive">
+    <left_joint>left_wheel_joint</left_joint>
+    <right_joint>right_wheel_joint</right_joint>
+    <wheel_separation>0.52</wheel_separation>
+    <wheel_radius>0.14</wheel_radius>
+    <max_linear_velocity>3</max_linear_velocity>
+    <min_linear_velocity>-3</min_linear_velocity>
+    <max_angular_velocity>3.0</max_angular_velocity>
+    <min_angular_velocity>-3.0</min_angular_velocity>
+    <max_linear_acceleration>2.0</max_linear_acceleration>
+    <topic>/donar_robot/cmd_vel</topic>
+    <odom_topic>odometry</odom_topic>
+    <frame_id>odom</frame_id>
+    <child_frame_id>base_footprint</child_frame_id>
+    <odom_publish_frequency>50</odom_publish_frequency>
+    <tf_topic>/tf</tf_topic>
+  </plugin>
+</gazebo>
+
+<!-- GAZEBO MATERIALS -->
+<gazebo reference="base_link">
+  <material>Gazebo/Grey</material>
+</gazebo>
+
+<gazebo reference="right_wheel_1">
+  <material>Gazebo/Black</material>
+  <mu1>1.0</mu1>
+  <mu2>1.0</mu2>
+</gazebo>
+
+<gazebo reference="left_wheel_1">
+  <material>Gazebo/Black</material>
+  <mu1>1.0</mu1>
+  <mu2>1.0</mu2>
+</gazebo>
+
+<gazebo reference="left_caster_wheel_1">
+  <mu1>0.01</mu1>
+  <mu2>0.01</mu2>
+</gazebo>
+
+<gazebo reference="right_caster_wheel_1">
+  <mu1>0.01</mu1>
+  <mu2>0.01</mu2>
+</gazebo>
+
+</robot>
