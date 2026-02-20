@@ -15,8 +15,6 @@ A differential drive mobile robot simulation package for ROS2 Humble with stable
 
 - **Stable Differential Drive:** 2 powered wheels with differential drive controller
 - **No-Hop Ball Casters:** Redesigned from complex swivel casters to simple ball casters, eliminating reverse motion hopping
-- **Dual Format Support:** Both SDF (for Gazebo) and URDF (for RViz/Nav2) formats
-- **Production Ready:** Tested and verified in Gazebo Ignition and RViz
 - **Extensible Design:** Ready for sensor integration (Lidar, Camera, IMU)
 
 ---
@@ -25,7 +23,7 @@ A differential drive mobile robot simulation package for ROS2 Humble with stable
 
 ### Gazebo Simulation
 ```bash
-ros2 launch donar_description gazebo_sdf.launch.py
+ros2 launch donar_description gazebo.launch.py
 ```
 
 ### RViz Visualization
@@ -58,7 +56,7 @@ mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws/src
 
 # Clone repository
-git clone https://github.com/yourusername/donar_description.git
+git clone https://github.com/Fonyuy45/donar_description.git
 
 # Install dependencies
 cd ~/ros2_ws
@@ -75,8 +73,11 @@ source install/setup.bash
 
 **Launch Gazebo Simulation:**
 ```bash
-export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:~/ros2_ws/install/donar_description/share
-ros2 launch donar_description gazebo_sdf.launch.py
+source install/setup.bash
+killall -9 gz ruby
+export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:~/donar_ws/install
+ros2 launch donar_description gazebo.launch.py
+
 ```
 
 **Control the Robot:**
