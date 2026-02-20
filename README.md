@@ -107,23 +107,6 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard \
 
 ---
 
-## Architecture
-
-### Package Structure
-```
-donar_description/
-├── config/              # Controller configurations
-├── launch/              # Launch files (Gazebo, RViz)
-├── meshes/              # CAD-exported STL meshes
-├── models/              # SDF models for Gazebo
-│   └── donar_robot/
-│       ├── model.config
-│       └── model.sdf    # Primary robot definition
-├── rviz/                # RViz configurations
-├── urdf/                # URDF/xacro files
-└── worlds/              # Gazebo world files
-```
-
 ### Key Components
 
 **Main Files:**
