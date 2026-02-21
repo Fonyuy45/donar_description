@@ -5,8 +5,6 @@
 
 
 <!-- BASE FOOTPRINT -->
-
-<!-- BASE FOOTPRINT -->
 <link name="base_footprint"/>
 
 <joint name="base_footprint_joint" type="fixed">
@@ -37,6 +35,38 @@
     </geometry>
   </collision>
 </link>
+
+
+<!-- LIDAR SENSOR -->
+<xacro:property name="width" value="0.03815" />
+<xacro:property name="bodylen" value="0.041" />
+<link name="lidar_scanner">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <mass value="0.17"/>
+    <inertia ixx="0.0001" iyy="0.0001" izz="0.0001" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder radius="${width}" length="${bodylen}"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder radius="${width}" length="${bodylen}"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="lidar_joint" type="fixed">
+  <origin xyz="0.00 0.00 0.41" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="lidar_scanner"/>
+</joint>
+
 
 <!-- RIGHT WHEEL -->
 <link name="right_wheel_1">
@@ -201,6 +231,37 @@
     <odom_publish_frequency>50</odom_publish_frequency>
     <tf_topic>/tf</tf_topic>
   </plugin>
+</gazebo>
+
+<!-- RPLidar A2 -->
+<gazebo reference="lidar_scanner">
+  <material>Gazebo/Black</material>
+  <sensor type="gpu_lidar" name="RPLidar_A2_sensor">
+  <ignition_frame_id>lidar_scanner</ignition_frame_id>
+    <topic>/donar_robot/laser/scan</topic>
+    <visualize>true</visualize>
+    <update_rate>40</update_rate>
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>720</samples>
+          <resolution>1</resolution>
+          <min_angle>-3.14159</min_angle>
+          <max_angle>3.14159</max_angle>
+        </horizontal>
+      </scan>
+      <range>
+        <min>0.20</min>
+        <max>16.0</max>
+        <resolution>0.02</resolution>
+      </range>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.01</stddev>
+      </noise>
+    </ray>
+  </sensor>
 </gazebo>
 
 <!-- GAZEBO MATERIALS -->

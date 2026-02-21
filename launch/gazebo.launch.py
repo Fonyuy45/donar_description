@@ -79,14 +79,17 @@ def generate_launch_description():
             '/joint_states@sensor_msgs/msg/JointState[ignition.msgs.Model',
 
             '/tf@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
-            '/tf_static@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V'
+            '/tf_static@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
+            
+            #Lidar Scanner
+            '/donar_robot/laser/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan'
         ],
         output='screen',
         parameters=[{'use_sim_time': True}]
     )
 
     # 7. RViz2
-    rviz_config = os.path.join(pkg_share, 'rviz', 'urdf_config.rviz') # Optional: if you have a saved config
+    rviz_config = os.path.join(pkg_share, 'rviz', 'urdf_config.rviz')
     rviz_node = Node(
         package='rviz2',
         executable='rviz2',
@@ -95,6 +98,7 @@ def generate_launch_description():
         output='screen',
         parameters=[{'use_sim_time': True}]
     )
+    
     
     return LaunchDescription([
             set_gazebo_path,
