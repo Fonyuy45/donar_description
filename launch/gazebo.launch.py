@@ -7,6 +7,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.substitutions import Command, LaunchConfiguration
 from launch.actions import TimerAction
+from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
     
@@ -20,9 +21,14 @@ def generate_launch_description():
     xacro_file = os.path.join(pkg_share, 'urdf', 'donar_robot.xacro')
     
     # Process Xacro into URDF
-    robot_description_content = Command(['xacro ', xacro_file])
+	# Fixed
+
+    robot_description_content = ParameterValue(
+	    Command(['xacro ', xacro_file]),
+	    value_type=str
+	)
     robot_description = {'robot_description': robot_description_content}
-    
+	
     # World file
     world_file = os.path.join(pkg_share, 'worlds', 'empty_world.sdf')
     
@@ -60,7 +66,7 @@ def generate_launch_description():
 		package='robot_state_publisher',
 		executable='robot_state_publisher',
 		output='screen',
-		parameters=[robot_description, {'use_sim_time': True}]
+		parameters=[robot_description, {'use_sim_time': False}]
 	    )]
 	)
     # ROS-Gazebo Bridge
@@ -82,10 +88,21 @@ def generate_launch_description():
             '/tf_static@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
             
             #Lidar Scanner
-            '/donar_robot/laser/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan'
+            '/donar_robot/laser/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan',
+            # RGB image
+	   '/donar_robot/depth_camera/image@sensor_msgs/msg/Image[ignition.msgs.Image',
+
+	   # Depth image  
+	  '/donar_robot/depth_camera/depth_image@sensor_msgs/msg/Image[ignition.msgs.Image',
+
+	 # Point cloud
+	 '/donar_robot/depth_camera/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked',
+
+	 # Camera info
+	 '/donar_robot/depth_camera/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo'
         ],
         output='screen',
-        parameters=[{'use_sim_time': True}]
+        parameters=[{'use_sim_time': False}]
     )
 
     # 7. RViz2
@@ -96,7 +113,7 @@ def generate_launch_description():
         name='rviz2',
         arguments=['-d', rviz_config] if os.path.exists(rviz_config) else [],
         output='screen',
-        parameters=[{'use_sim_time': True}]
+        parameters=[{'use_sim_time': False}]
     )
     
     
