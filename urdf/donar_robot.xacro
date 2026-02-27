@@ -63,6 +63,92 @@
 
 
 
+<!--MPU9250 -->
+
+<link name="IMU_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="0.0005"/>
+    <inertia ixx="0.0000001" iyy="0.0000001" izz="0.0000001"
+             ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  <geometry>
+    <box size="0.0025 0.009 0.0025"/>
+  </geometry>
+    <material name="black">
+      <color rgba="0.0 0.0 0.0 1.0"/>
+    </material>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <box size="0.0025 0.009 0.0025"/>
+    </geometry>
+  </collision>
+</link>
+
+<!-- Mount IMU to robot -->
+<joint name="IMU_joint" type="fixed">
+  <origin xyz="0.0 0.0 0.15" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="IMU_link"/>
+</joint>
+
+<!-- GAZEBO SENSOR PLUGIN -->
+
+<gazebo reference="IMU_link">
+  <sensor name="mpu9250" type="imu">
+    <ignition_frame_id>IMU_link</ignition_frame_id>
+    <always_on>1</always_on>
+    <update_rate>100</update_rate>
+    <topic>/donar_robot/imu</topic>
+    <imu>
+      <angular_velocity>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.00017</stddev>
+          </noise>
+        </x>
+        <y>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.00017</stddev>
+          </noise>
+        </y>
+        <z>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.00017</stddev>
+          </noise>
+        </z>
+      </angular_velocity>
+      <linear_acceleration>
+        <x>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.0029</stddev>
+          </noise>
+        </x>
+        <y>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.0029</stddev>
+          </noise>
+        </y>
+        <z>
+          <noise type="gaussian">
+            <mean>0.0</mean>
+            <stddev>0.0029</stddev>
+          </noise>
+        </z>
+      </linear_acceleration>
+    </imu>
+  </sensor>
+</gazebo>
+
 <!-- IntelRealSense D435 camera -->
 
 <!-- RGBD CAMERA -->
@@ -319,15 +405,6 @@
   </plugin>
 </gazebo>
 
-<gazebo>
-  <plugin filename="ignition-gazebo-odometry-publisher-system"
-          name="ignition::gazebo::systems::OdometryPublisher">
-    <odom_topic>/donar_robot/odometry</odom_topic>
-    <odom_frame>odom</odom_frame>
-    <robot_base_frame>base_link</robot_base_frame>
-    <odom_publish_frequency>50</odom_publish_frequency>
-  </plugin>
-</gazebo>
 
 <gazebo>
   <plugin filename="ignition-gazebo-diff-drive-system"
@@ -342,7 +419,7 @@
     <min_angular_velocity>-3.0</min_angular_velocity>
     <max_linear_acceleration>2.0</max_linear_acceleration>
     <topic>/donar_robot/cmd_vel</topic>
-    <odom_topic>odometry</odom_topic>
+    <odom_topic>/donar_robot/odometry</odom_topic>
     <frame_id>odom</frame_id>
     <child_frame_id>base_footprint</child_frame_id>
     <odom_publish_frequency>50</odom_publish_frequency>

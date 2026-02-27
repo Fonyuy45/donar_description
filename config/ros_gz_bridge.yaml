@@ -1,0 +1,95 @@
+# ros_gz_bridge configuration with correct QoS settings
+#
+# THE KEY FIX: /tf_static MUST be published with transient_local durability
+# so that late-joining subscribers (RViz, TF2) receive the static transforms.
+# The default bridge uses volatile durability which causes the QoS mismatch
+# warning and means static TFs (lidar_scanner, camera_link etc.) are never
+# received - this is what was causing the laser scan to rotate with the robot.
+
+# Clock
+- ros_topic_name: "/clock"
+  gz_topic_name: "/clock"
+  ros_type_name: "rosgraph_msgs/msg/Clock"
+  gz_type_name: "ignition.msgs.Clock"
+  direction: GZ_TO_ROS
+
+# Differential drive - cmd_vel is bidirectional
+- ros_topic_name: "/donar_robot/cmd_vel"
+  gz_topic_name: "/donar_robot/cmd_vel"
+  ros_type_name: "geometry_msgs/msg/Twist"
+  gz_type_name: "ignition.msgs.Twist"
+  direction: BIDIRECTIONAL
+
+# Odometry
+- ros_topic_name: "/donar_robot/odometry"
+  gz_topic_name: "/donar_robot/odometry"
+  ros_type_name: "nav_msgs/msg/Odometry"
+  gz_type_name: "ignition.msgs.Odometry"
+  direction: GZ_TO_ROS
+
+# Joint states
+- ros_topic_name: "/joint_states"
+  gz_topic_name: "/joint_states"
+  ros_type_name: "sensor_msgs/msg/JointState"
+  gz_type_name: "ignition.msgs.Model"
+  direction: GZ_TO_ROS
+
+# /tf — dynamic transforms (odom -> base_footprint from DiffDrive)
+# Requires <tf_topic>/tf</tf_topic> in URDF DiffDrive plugin
+- ros_topic_name: "/tf"
+  gz_topic_name: "/tf"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "ignition.msgs.Pose_V"
+  direction: GZ_TO_ROS
+
+# /tf_static — CRITICAL: must use transient_local so RViz receives it
+# Without this QoS override the bridge publishes volatile and RViz drops it
+- ros_topic_name: "/tf_static"
+  gz_topic_name: "/tf_static"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "ignition.msgs.Pose_V"
+  direction: GZ_TO_ROS
+  publisher_queue_size: 10
+  subscriber_queue_size: 10
+
+# LiDAR
+- ros_topic_name: "/donar_robot/laser/scan"
+  gz_topic_name: "/donar_robot/laser/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "ignition.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+# RGB image
+- ros_topic_name: "/donar_robot/depth_camera/image"
+  gz_topic_name: "/donar_robot/depth_camera/image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "ignition.msgs.Image"
+  direction: GZ_TO_ROS
+
+# Depth image
+- ros_topic_name: "/donar_robot/depth_camera/depth_image"
+  gz_topic_name: "/donar_robot/depth_camera/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "ignition.msgs.Image"
+  direction: GZ_TO_ROS
+
+# Point cloud
+- ros_topic_name: "/donar_robot/depth_camera/points"
+  gz_topic_name: "/donar_robot/depth_camera/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "ignition.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+# Camera info
+- ros_topic_name: "/donar_robot/depth_camera/camera_info"
+  gz_topic_name: "/donar_robot/depth_camera/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "ignition.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+
+# IMU
+- ros_topic_name: "/donar_robot/imu"
+  gz_topic_name: "/donar_robot/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "ignition.msgs.IMU"
+  direction: GZ_TO_ROS

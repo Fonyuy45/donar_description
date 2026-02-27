@@ -1,4 +1,6 @@
+<?xml version='1.0'?>
 <sdf version='1.9'>
+
   <world name='empty_world'>
     <physics name='1ms' type='ignored'>
       <max_step_size>0.001</max_step_size>
@@ -11,6 +13,9 @@
     <plugin name='ignition::gazebo::systems::Sensors' filename='ignition-gazebo-sensors-system'>
       <render_engine>ogre</render_engine>
     </plugin>
+    <plugin filename="ignition-gazebo-imu-system"
+    name="ignition::gazebo::systems::Imu"/>
+
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
@@ -420,4 +425,9 @@
       </spot>
     </light>
   </world>
+  <physics name='1ms' type='ignored'>
+    <max_step_size>0.004</max_step_size>      <!-- was 0.001 -->
+    <real_time_factor>1</real_time_factor>
+    <real_time_update_rate>250</real_time_update_rate>  <!-- was 1000 -->
+</physics>
 </sdf>

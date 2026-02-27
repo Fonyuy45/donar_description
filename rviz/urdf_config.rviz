@@ -10,7 +10,6 @@ Panels:
         - /LaserScan1
         - /LaserScan1/Topic1
         - /Image1
-        - /Image1/Status1
       Splitter Ratio: 0.5
     Tree Height: 514
   - Class: rviz_common/Selection
@@ -69,6 +68,11 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
+        IMU_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         Link Tree Style: Links in Alphabetic Order
         base_footprint:
           Alpha: 1
@@ -169,6 +173,34 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /donar_robot/depth_camera/image
       Value: true
+    - Acceleration properties:
+        Acc. vector alpha: 1
+        Acc. vector color: 255; 0; 0
+        Acc. vector scale: 1
+        Derotate acceleration: true
+        Enable acceleration: false
+      Axes properties:
+        Axes scale: 1
+        Enable axes: true
+      Box properties:
+        Box alpha: 1
+        Box color: 255; 0; 0
+        Enable box: false
+        x_scale: 1
+        y_scale: 1
+        z_scale: 1
+      Class: rviz_imu_plugin/Imu
+      Enabled: true
+      Name: Imu
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /donar_robot/imu
+      Value: true
+      fixed_frame_orientation: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -215,7 +247,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 27.96632194519043
+      Distance: 18.23233413696289
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -230,10 +262,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.35039830207824707
+      Pitch: 0.41039836406707764
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.141745090484619
+      Yaw: 1.1735597848892212
     Saved: ~
 Window Geometry:
   Displays:
